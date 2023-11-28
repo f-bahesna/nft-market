@@ -183,7 +183,7 @@ header {
 }
 
 .card__image img {
-  max-width: 100%;
+  max-width: 50%;
 }
 
 .card__info {

@@ -21,6 +21,8 @@ function App() {
     const [home, setHome] = useState({})
     const [toggle, setToggle] = useState(false)
 
+    const [walletConnected, setWalletConnected] = useState(false)
+
     // change account
     window.ethereum.on('accountsChanged', async () => {
         const accounts = await window.ethereum.request(
@@ -72,30 +74,44 @@ function App() {
 
   return (
     <div>
-      <Navigation account={account} setAccount={setAccount} />
+      <Navigation
+          account={account}
+          setAccount={setAccount}
+          walletConnected={walletConnected}
+          setWalletConnected={setWalletConnected}
+      />
+
       <Search />
-      <div className='cards__section'>
-        <h3>Homes for you</h3>
-          <hr />
-          <div className='cards'>
-              {homes.map((home, index) => (
-                  <div className='card' key={index} onClick={() => togglePop(home)}>
-                      <div className='card_image'>
-                          <img src={home.image} alt='Home' />
-                      </div>
-                      <div className='card__info'>
-                          <h4>{home.attributes[0].value} ETH</h4>
-                              <p>
-                                  <strong>{home.attributes[2].value}</strong> bds  |
-                                  <strong>{home.attributes[3].value}</strong> ba   |
-                                  <strong>{home.attributes[4].value}</strong> sqft |
-                              </p>
-                          <p>{home.address}</p>
-                      </div>
-                  </div>
-                ))}
-          </div>
-      </div>
+
+        {walletConnected ?
+            <div className='cards__section'>
+                <h3>Homes for you</h3>
+                <hr/>
+                <div className='cards'>
+                    {homes.map((home, index) => (
+                        <div className='card' key={index} onClick={() => togglePop(home)}>
+                            <div className='card_image'>
+                                <img src={home.image} alt='Home'/>
+                            </div>
+                            <div className='card__info'>
+                                <h4>{home.attributes[0].value} ETH</h4>
+                                <p>
+                                    <strong>{home.attributes[2].value}</strong> bds |
+                                    <strong>{home.attributes[3].value}</strong> ba |
+                                    <strong>{home.attributes[4].value}</strong> sqft |
+                                </p>
+                                <p>{home.address}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            :
+            <div>
+                <h2 className='cards__section'>Please connect your wallet first!</h2>
+            </div>
+        }
+
         {toggle && ( <Home home={home} provider={provider} account={account} escrow={escrow} togglePop={togglePop} /> )}
     </div>
   );

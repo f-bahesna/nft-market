@@ -1,6 +1,6 @@
 import logo from '../assets/logo.svg';
 
-const Navigation = ({ account, setAccount }) => {
+const Navigation = ({ account, setAccount, walletConnected, setWalletConnected }) => {
     const connectHandler = async () => {
         const accounts = await window.ethereum.request(
             {
@@ -9,6 +9,7 @@ const Navigation = ({ account, setAccount }) => {
         );
 
         setAccount(accounts[0]);
+        setWalletConnected(true)
     }
 
     return (
