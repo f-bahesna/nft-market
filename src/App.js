@@ -23,6 +23,9 @@ function App() {
 
     const [walletConnected, setWalletConnected] = useState(false)
 
+    useEffect(() => {
+    }, [walletConnected])
+
     // change account
     window.ethereum.on('accountsChanged', async () => {
         const accounts = await window.ethereum.request(
@@ -32,6 +35,7 @@ function App() {
         );
 
         const account = ethers.utils.getAddress(accounts[0])
+
         setAccount(account);
     })
 
@@ -48,6 +52,7 @@ function App() {
         }
 
         const realEstate = new ethers.Contract(contractAddresses.realEstate.address, RealEstate, provider)
+
         const totalSupply = await realEstate.totalSupply()
         const homes = []
 
@@ -90,7 +95,7 @@ function App() {
                 <div className='cards'>
                     {homes.map((home, index) => (
                         <div className='card' key={index} onClick={() => togglePop(home)}>
-                            <div className='card_image'>
+                            <div className='card__image'>
                                 <img src={home.image} alt='Home'/>
                             </div>
                             <div className='card__info'>
