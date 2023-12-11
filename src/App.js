@@ -7,8 +7,8 @@ import Search from './components/Search';
 import Home from './components/Home';
 
 // ABIs
-import RealEstate from './abis/RealEstate.json'
-import Escrow from './abis/Escrow.json'
+import RealEstateABI from './abis/RealEstate.json'
+import EscrowABI from './abis/Escrow.json'
 
 // Config
 import config from './config.json';
@@ -24,6 +24,7 @@ function App() {
     const [walletConnected, setWalletConnected] = useState(false)
 
     useEffect(() => {
+
     }, [walletConnected])
 
     // change account
@@ -51,8 +52,7 @@ function App() {
             throw new Error(`No contract addresses found for chainId ${chainId}`)
         }
 
-        const realEstate = new ethers.Contract(contractAddresses.realEstate.address, RealEstate, provider)
-
+        const realEstate = new ethers.Contract(contractAddresses.realEstate.address, RealEstateABI, provider)
         const totalSupply = await realEstate.totalSupply()
         const homes = []
 
@@ -64,7 +64,7 @@ function App() {
         }
         setHomes(homes)
 
-        const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
+        const escrow = new ethers.Contract(config[network.chainId].escrow.address, EscrowABI, provider)
         setEscrow(escrow)
     }
 
